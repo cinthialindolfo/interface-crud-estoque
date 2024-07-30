@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Listar Produtos</h2>
+<table class="product-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Preço</th>
+            <th>Quantidade</th>
+            <th>Vendido</th>
+            <th>Estoque</th>
+            <th>Categoria</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for produto in data %}
+        <tr>
+            <td>{{ produto.id }}</td>
+            <td>{{ produto.nome }}</td>
+            <td>{{ produto.preco }}</td>
+            <td>{{ produto.quantidade }}</td>
+            <td>{{ produto.vendido }}</td>
+            <td>{{ produto.estoque }}</td>
+            <td>{{ produto.categoria }}</td>
+            <td>
+                <a href="{{ url_for('update_product', produto_id=produto.id) }}" class="action-btn edit-btn">Editar</a>
+                <form action="{{ url_for('delete_product', produto_id=produto.id) }}" method="post" style="display:inline;">
+                    <button type="submit" class="action-btn delete-btn">Deletar</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

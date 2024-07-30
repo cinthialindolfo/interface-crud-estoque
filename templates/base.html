@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerar Relatório em PDF</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Gerador de Relatório</h1>
+        </header>
+
+        <!-- Formulário para entrada de dados -->
+        <section id="form-section">
+            <h2>Adicionar Dados</h2>
+            <form id="data-form">
+                <label for="name">Nome:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="message">Mensagem:</label>
+                <textarea id="message" name="message" rows="4" required></textarea>
+
+                <button type="submit">Enviar</button>
+            </form>
+        </section>
+
+        <!-- Botão para gerar PDF -->
+        <section id="pdf-section">
+            <button onclick="generatePDF()">Gerar Relatório em PDF</button>
+        </section>
+
+        <!-- Tabela para visualização de dados -->
+        <section id="data-section">
+            <h2>Dados Inseridos</h2>
+            <table class="product-table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Mensagem</th>
+                    </tr>
+                </thead>
+                <tbody id="data-table-body">
+                    <!-- Os dados inseridos aparecerão aqui -->
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <script>
+        // Função para adicionar dados à tabela
+        document.getElementById('data-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Impede o envio padrão do formulário
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            const tableBody = document.getElementById('data-table-body');
+            const newRow = document.createElement('tr');
+
+            newRow.innerHTML = `
+                <td>${name}</td>
+                <td>${email}</td>
+                <td>${message}</td>
+            `;
+
+            tableBody.appendChild(newRow);
+
+            // Limpa o formulário após o envio
+            document.getElementById('data-form').reset();
+        });
+
+        // Função para gerar e baixar o PDF
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Adiciona título
+            doc.setFontSize(18);
+            doc.text('Relatório de Dados', 14, 22);
+
+            // Adiciona tabela
+            doc.setFontSize(12);
+            doc.text('Nome', 14, 40);
+            doc.text('Email', 70, 40);
+            doc.text('Mensagem', 120, 40);
+
+            const tableBody = document.getElementById('data-table-body');
+            let y = 50; // Posição vertical inicial
+            Array.from(tableBody.querySelectorAll('tr')).forEach(row => {
+                const cells = row.querySelectorAll('td');
+                doc.text(cells[0].textContent, 14, y);
+                doc.text(cells[1].textContent, 70, y);
+                doc.text(cells[2].textContent, 120, y);
+                y += 10; // Incrementa a posição vertical para a próxima linha
+            });
+
+            // Salva o PDF
+            doc.save('relatorio.pdf');
+        }
+    </script>
+</body>
+</html>

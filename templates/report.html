@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Relatório de Produtos</h2>
+<p>O relatório foi gerado com sucesso. <a href="{{ url_for('static', filename='relatorio_produtos.csv') }}">Clique aqui para baixar o relatório</a>.</p>
+{% endblock %}

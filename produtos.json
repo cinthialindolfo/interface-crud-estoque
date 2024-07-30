@@ -1,0 +1,11 @@
+[
+    {
+        "id": 1,
+        "nome": "oi",
+        "preco": 34.0,
+        "quantidade": 35,
+        "vendido": 0,
+        "estoque": 35,
+        "categoria": "Maturado - artesanal"
+    }
+]
